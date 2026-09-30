@@ -3,9 +3,11 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.api import airports
 from app.db import get_db
 
 app = FastAPI(title="Flight Simulator API")
+app.include_router(airports.router)
 
 
 @app.get("/api/health")

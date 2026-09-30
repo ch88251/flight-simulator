@@ -17,3 +17,12 @@ docker compose up --build
 | Postgres | localhost:5432 (flightsim/flightsim)  |
 
 The backend source is bind-mounted, and uvicorn reloads when you change the code.
+
+## Database migrations
+
+Migrations run automatically (`alembic upgrade head`) when the backend container starts.
+To create a new migration after changing the models:
+
+```bash
+docker compose exec backend alembic revision --autogenerate -m "describe change"
+```
