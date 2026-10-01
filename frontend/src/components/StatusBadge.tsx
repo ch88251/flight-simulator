@@ -5,6 +5,7 @@ const LABELS: Record<AircraftStatus, string> = {
   climbing: 'Climbing',
   cruising: 'Cruising',
   descending: 'Descending',
+  landed: 'Landed',
 }
 
 export function StatusBadge({ status }: { status: AircraftStatus }) {

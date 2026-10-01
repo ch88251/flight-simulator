@@ -1,6 +1,6 @@
 // Mirrors the backend's Pydantic schemas in backend/app/schemas.py.
 
-export type AircraftStatus = 'on_ground' | 'climbing' | 'cruising' | 'descending'
+export type AircraftStatus = 'on_ground' | 'climbing' | 'cruising' | 'descending' | 'landed'
 
 export interface AirportRef {
   id: number

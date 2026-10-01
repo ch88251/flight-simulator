@@ -24,6 +24,7 @@ class AircraftStatus(enum.StrEnum):
     CLIMBING = "climbing"
     CRUISING = "cruising"
     DESCENDING = "descending"
+    LANDED = "landed"
 
 
 class Aircraft(Base):

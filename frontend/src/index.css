@@ -134,21 +134,26 @@ abbr {
 }
 
 .badge-on_ground {
-  background: #eef0f3;
+  background: #ffffff;
   color: #4b5563;
 }
 
 .badge-climbing {
-  background: #e6f6ec;
+  background: #ffffff;
   color: #1a7f3c;
 }
 
 .badge-cruising {
-  background: #e8efff;
+  background: #ffffff;
   color: #1d4ed8;
 }
 
 .badge-descending {
-  background: #fff4e5;
-  color: #b45309;
+  background: #ffffff;
+  color: #bc6421;
+}
+
+.badge-landed {
+  background: #ffffff;
+  color: #b91c1c;
 }

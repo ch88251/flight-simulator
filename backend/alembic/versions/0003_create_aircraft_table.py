@@ -29,6 +29,7 @@ def upgrade() -> None:
                 "climbing",
                 "cruising",
                 "descending",
+                "landed",
                 name="aircraft_status",
                 native_enum=False,
                 length=20,
