@@ -12,11 +12,14 @@ docker compose up --build
 
 | Service  | URL                                   |
 |----------|---------------------------------------|
+| Web app  | http://localhost:5173                 |
 | API      | http://localhost:8000/api/health      |
 | API docs | http://localhost:8000/docs            |
 | Postgres | localhost:5432 (flightsim/flightsim)  |
 
-The backend source is bind-mounted, and uvicorn reloads when you change the code.
+The backend and frontend sources are bind-mounted, so uvicorn and Vite reload when
+you change the code. If port 5173 is taken, choose another host port with
+`FRONTEND_PORT=5174 docker compose up` (or put `FRONTEND_PORT=5174` in a `.env` file).
 
 ## Database migrations
 
@@ -48,3 +51,15 @@ Inside the container the virtualenv lives at `/opt/venv`, so commands such as
 `docker compose exec backend ruff check .` also work.
 Migrations generated with `alembic revision --autogenerate` are automatically
 linted and formatted with Ruff.
+
+## Frontend development
+
+The frontend is React + TypeScript, built with [Vite](https://vite.dev/). In development
+the Vite server forwards `/api` requests to the backend.
+
+```bash
+cd frontend
+npm install        # install dependencies locally (for your editor)
+npm run lint       # ESLint
+npm run build      # type-check and build for production
+```
