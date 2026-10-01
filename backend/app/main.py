@@ -1,13 +1,30 @@
+import logging
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from app.api import airports
-from app.db import get_db
+from app.api import aircraft, airports
+from app.config import settings
+from app.db import SessionLocal, get_db
+from app.fleet import replace_fleet
 
-app = FastAPI(title="Flight Simulator API")
+logging.basicConfig(level=logging.INFO)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    with SessionLocal() as db:
+        replace_fleet(db, settings.num_aircraft)
+    yield
+
+
+app = FastAPI(title="Flight Simulator API", lifespan=lifespan)
 app.include_router(airports.router)
+app.include_router(aircraft.router)
 
 
 @app.get("/api/health")
