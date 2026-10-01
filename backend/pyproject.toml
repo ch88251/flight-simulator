@@ -14,6 +14,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pytest>=9.1.1",
     "ruff>=0.13",
 ]
 
@@ -45,3 +46,6 @@ extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path"]
 known-first-party = ["app"]
 # The local alembic/ migrations folder would otherwise make `alembic` look first-party.
 known-third-party = ["alembic"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
