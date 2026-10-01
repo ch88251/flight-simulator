@@ -1,0 +1,47 @@
+[project]
+name = "flight-simulator-backend"
+version = "0.1.0"
+description = "FastAPI backend for the flight simulator"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.14",
+    "fastapi>=0.115",
+    "psycopg[binary]>=3.2",
+    "pydantic-settings>=2.6",
+    "sqlalchemy>=2.0.36",
+    "uvicorn[standard]>=0.32",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "C4",  # flake8-comprehensions
+    "RUF", # ruff-specific rules
+]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's Depends() in argument defaults is idiomatic.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+# The local alembic/ migrations folder would otherwise make `alembic` look first-party.
+known-third-party = ["alembic"]

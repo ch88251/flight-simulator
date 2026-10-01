@@ -53,7 +53,5 @@ def replace_fleet(db: Session, count: int, rng: random.Random | None = None) -> 
         )
     db.add_all(fleet)
     db.commit()
-    logger.info(
-        "Created fleet: %s", ", ".join(f"{a.callsign}@{a.origin.code}" for a in fleet)
-    )
+    logger.info("Created fleet: %s", ", ".join(f"{a.callsign}@{a.origin.code}" for a in fleet))
     return fleet

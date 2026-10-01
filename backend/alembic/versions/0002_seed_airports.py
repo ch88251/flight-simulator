@@ -4,6 +4,7 @@ Revision ID: 0002
 Revises: 0001
 Create Date: 2026-09-30
 """
+
 from collections.abc import Sequence
 
 import sqlalchemy as sa
@@ -53,7 +54,14 @@ def upgrade() -> None:
     op.bulk_insert(
         airports,
         [
-            dict(code=c, name=n, city=city, latitude=lat, longitude=lon, altitude_ft=alt)
+            {
+                "code": c,
+                "name": n,
+                "city": city,
+                "latitude": lat,
+                "longitude": lon,
+                "altitude_ft": alt,
+            }
             for c, n, city, lat, lon, alt in AIRPORTS
         ],
     )

@@ -19,7 +19,7 @@ class Airport(Base):
     altitude_ft: Mapped[int] = mapped_column(Integer)  # field elevation, feet MSL
 
 
-class AircraftStatus(str, enum.Enum):
+class AircraftStatus(enum.StrEnum):
     ON_GROUND = "on_ground"
     CLIMBING = "climbing"
     CRUISING = "cruising"
