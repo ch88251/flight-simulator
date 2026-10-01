@@ -50,6 +50,15 @@ class Aircraft(Base):
     # On the ground, origin is the airport the aircraft is parked at.
     origin_airport_id: Mapped[int] = mapped_column(ForeignKey("airports.id"))
     destination_airport_id: Mapped[int | None] = mapped_column(ForeignKey("airports.id"))
+
+    # Flight plan and progress (see app/simulation.py).
+    cruise_speed_kts: Mapped[float] = mapped_column(Float, server_default="450")
+    cruise_altitude_ft: Mapped[float] = mapped_column(Float, server_default="0")
+    route_distance_nm: Mapped[float] = mapped_column(Float, server_default="0")
+    distance_flown_nm: Mapped[float] = mapped_column(Float, server_default="0")
+    # Simulated seconds left on the ground before departure (on_ground) or taxi-in (landed).
+    ground_time_remaining_s: Mapped[float] = mapped_column(Float, server_default="0")
+
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )

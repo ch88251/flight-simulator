@@ -63,3 +63,13 @@ npm install        # install dependencies locally (for your editor)
 npm run lint       # ESLint
 npm run build      # type-check and build for production
 ```
+
+The container keeps its own `node_modules` in an anonymous volume. After adding or
+upgrading npm packages, rebuild it and renew that volume:
+
+```bash
+docker compose up --build -V frontend
+```
+
+The Map view uses [Leaflet](https://leafletjs.com/) with OpenStreetMap tiles, so it
+needs internet access to load the map background.

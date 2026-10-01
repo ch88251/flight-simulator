@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { AircraftMap } from './components/AircraftMap'
 import { AircraftTable } from './components/AircraftTable'
 import { useAircraft } from './hooks/useAircraft'
+import { useAirports } from './hooks/useAirports'
 
 type View = 'table' | 'map'
 
@@ -17,6 +19,7 @@ function viewFromHash(): View {
 export default function App() {
   const [view, setView] = useState<View>(viewFromHash)
   const { aircraft, error, loading } = useAircraft()
+  const { airports, error: airportsError } = useAirports()
 
   useEffect(() => {
     const onHashChange = () => setView(viewFromHash())
@@ -38,14 +41,15 @@ export default function App() {
         <span className="muted">{aircraft.length} aircraft</span>
       </header>
 
-      <main>
+      <main className={view === 'map' ? 'map-view' : undefined}>
         {error && <div className="error">Could not load aircraft: {error}</div>}
-        {loading ? (
+        {airportsError && <div className="error">Could not load airports: {airportsError}</div>}
+        {view === 'map' ? (
+          <AircraftMap aircraft={aircraft} airports={airports} />
+        ) : loading ? (
           <p className="muted">Loading…</p>
-        ) : view === 'table' ? (
-          <AircraftTable aircraft={aircraft} />
         ) : (
-          <p className="muted">Map view coming soon.</p>
+          <AircraftTable aircraft={aircraft} />
         )}
       </main>
     </div>

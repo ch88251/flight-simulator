@@ -22,6 +22,12 @@ body {
   margin: 0;
 }
 
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .app-header {
   display: flex;
   align-items: center;
@@ -64,7 +70,16 @@ body {
 }
 
 main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
   padding: 1.5rem;
+}
+
+main.map-view {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .muted {
@@ -156,4 +171,45 @@ abbr {
 .badge-landed {
   background: #ffffff;
   color: #b91c1c;
+}
+
+.map-wrapper {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
+/* Leaflet adds a white box to divIcons by default; the SVG is the whole icon. */
+.aircraft-icon {
+  background: none;
+  border: none;
+}
+
+.aircraft-icon svg {
+  display: block;
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.35));
+}
+
+.leaflet-tooltip.airport-label {
+  padding: 0 4px;
+  border: none;
+  background: rgb(255 255 255 / 0.85);
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.leaflet-tooltip.airport-label::before {
+  display: none;
+}
+
+.aircraft-popup {
+  line-height: 1.8;
 }

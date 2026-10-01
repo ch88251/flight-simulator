@@ -39,4 +39,9 @@ class AircraftOut(BaseModel):
     ground_speed_kts: float
     origin: AirportRef
     destination: AirportRef | None
+    cruise_speed_kts: float
+    cruise_altitude_ft: float
+    route_distance_nm: float
+    distance_flown_nm: float
+    ground_time_remaining_s: float
     updated_at: datetime

@@ -22,3 +22,13 @@ export interface Aircraft {
   destination: AirportRef | null
   updated_at: string
 }
+
+export interface Airport {
+  id: number
+  code: string
+  name: string
+  city: string
+  latitude: number
+  longitude: number
+  altitude_ft: number
+}
