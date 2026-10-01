@@ -31,5 +31,17 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    build: ./frontend
+    environment:
+      VITE_API_PROXY_TARGET: http://backend:8000
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # keep the image's node_modules, not the host's
+    depends_on:
+      - backend
+
 volumes:
   pgdata:
