@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { useMemo } from 'react'
 import { CircleMarker, MapContainer, Marker, Polyline, Popup, TileLayer, Tooltip } from 'react-leaflet'
+import { greatCirclePoints } from '../geo'
 import type { Aircraft, AircraftStatus, Airport } from '../types'
 import { StatusBadge } from './StatusBadge'
 
@@ -92,10 +93,10 @@ export function AircraftMap({ aircraft, airports }: Props) {
             <span key={a.id}>
               {airborne && origin && destination && (
                 <Polyline
-                  positions={[
+                  positions={greatCirclePoints(
                     [origin.latitude, origin.longitude],
                     [destination.latitude, destination.longitude],
-                  ]}
+                  )}
                   pathOptions={{ color: STATUS_COLORS[a.status], weight: 2, dashArray: '6 6' }}
                 />
               )}

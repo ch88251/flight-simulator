@@ -1,3 +1,5 @@
+import asyncio
+import contextlib
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -11,6 +13,7 @@ from app.api import aircraft, airports
 from app.config import settings
 from app.db import SessionLocal, get_db
 from app.fleet import replace_fleet
+from app.simulation_loop import run_simulation
 
 logging.basicConfig(level=logging.INFO)
 
@@ -19,7 +22,18 @@ logging.basicConfig(level=logging.INFO)
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     with SessionLocal() as db:
         replace_fleet(db, settings.num_aircraft)
+
+    # Note: the simulation runs inside the API process, so run a single worker.
+    task = None
+    if settings.simulation_enabled:
+        task = asyncio.create_task(
+            run_simulation(settings.sim_time_scale, settings.sim_tick_seconds)
+        )
     yield
+    if task is not None:
+        task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
 
 
 app = FastAPI(title="Flight Simulator API", lifespan=lifespan)

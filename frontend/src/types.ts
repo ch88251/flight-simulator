@@ -20,6 +20,12 @@ export interface Aircraft {
   ground_speed_kts: number
   origin: AirportRef
   destination: AirportRef | null
+  cruise_speed_kts: number
+  cruise_altitude_ft: number
+  route_distance_nm: number
+  distance_flown_nm: number
+  /** Simulated seconds until departure (on_ground) or end of taxi-in (landed). */
+  ground_time_remaining_s: number
   updated_at: string
 }
 
