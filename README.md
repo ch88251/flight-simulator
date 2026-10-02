@@ -2,7 +2,28 @@
 
 ## Overview
 
-Simulates air traffic: aircraft fly between real airports, with Table and Map views.
+Flight Simulator is a full-stack web application that simulates airline traffic in
+accelerated real time. A fleet of aircraft — with airline-style callsigns and real
+types such as the Airbus A320, Boeing 737-800, and Boeing 787-9 — flies continuously
+between twenty real-world airports, and a web UI shows the fleet's live position,
+altitude, speed, heading, and flight progress.
+
+The backend is a FastAPI service backed by PostgreSQL (schema managed with Alembic
+migrations, which also seed the airport data). On startup it generates a fresh fleet
+parked at random airports, each with a destination and a staggered departure
+countdown. A pure-Python simulation engine then advances every aircraft once per tick
+through its full flight cycle — departure, climb, cruise, descent, touchdown, taxi-in,
+and turnaround — flying great-circle routes with a fixed climb rate, route-length-based
+cruise altitudes up to FL370, a 3 nm per 1,000 ft descent profile, and speeds that ramp
+between takeoff/landing speed and each type's cruise speed. Simulated time runs faster
+than wall-clock time (30× by default) and is fully configurable, so a complete flight
+takes minutes to watch instead of hours. The live fleet state is exposed through a REST
+API with auto-generated OpenAPI docs.
+
+The frontend is a React + TypeScript single-page app (built with Vite) that polls the
+API every two seconds and presents the fleet in two views, shown below. Everything —
+database, backend, and frontend — runs locally with a single `docker compose up`, with
+hot reload on both tiers.
 
 ### Table View
 
@@ -12,12 +33,12 @@ Simulates air traffic: aircraft fly between real airports, with Table and Map vi
 
 ![Map view showing aircraft on a world map](map_view.png)
 
-**Stack:** FastAPI · SQLAlchemy · Alembic · PostgreSQL · React · Docker Compose
+**Tech Stack:** FastAPI · SQLAlchemy · Alembic · PostgreSQL · React · Docker Compose
 
 ## Running locally
 
 ```bash
-docker compose up --build
+docker compose up -d
 ```
 
 | Service  | URL                                   |
