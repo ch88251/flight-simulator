@@ -21,6 +21,29 @@ The backend and frontend sources are bind-mounted, so uvicorn and Vite reload wh
 you change the code. If port 5173 is taken, choose another host port with
 `FRONTEND_PORT=5174 docker compose up` (or put `FRONTEND_PORT=5174` in a `.env` file).
 
+## Simulation
+
+On startup the backend replaces the fleet with `NUM_AIRCRAFT` aircraft parked at random
+airports, each with a destination and a departure countdown. A background task then
+advances every aircraft once per tick:
+
+`on_ground` → `climbing` → `cruising` → `descending` → `landed` (taxi-in) → `on_ground`
+at the arrival airport with a new destination.
+
+Aircraft follow great-circle routes, climb at 2,500 ft/min, cruise at a type-specific
+speed and an altitude based on route length (up to FL370), and descend on a 3 nm per
+1,000 ft profile. The engine lives in `backend/app/simulation.py`.
+
+| Setting (env var)    | Default | Meaning                                          |
+|----------------------|---------|--------------------------------------------------|
+| `NUM_AIRCRAFT`       | `5`     | Aircraft created at startup                      |
+| `SIM_TIME_SCALE`     | `30`    | Simulated seconds per real second                |
+| `SIM_TICK_SECONDS`   | `1`     | Real seconds between simulation ticks            |
+| `SIMULATION_ENABLED` | `true`  | Set to `false` to freeze the fleet on the ground |
+
+The simulation runs inside the API process, so run the backend with a single worker.
+Times shown in the UI (for example "Departs in 12 min") are simulated time.
+
 ## Database migrations
 
 Migrations run automatically (`alembic upgrade head`) when the backend container starts.
@@ -42,13 +65,15 @@ uv sync                      # create .venv with app + dev dependencies (for you
 uv run ruff check .          # lint
 uv run ruff check --fix .    # lint and apply safe fixes
 uv run ruff format .         # format
+uv run pytest                # run tests (no database needed)
 uv add <package>             # add a runtime dependency (updates uv.lock)
 uv add --dev <package>       # add a dev-only dependency
 ```
 
 After changing dependencies, rebuild the image with `docker compose up --build`.
 Inside the container the virtualenv lives at `/opt/venv`, so commands such as
-`docker compose exec backend ruff check .` also work.
+`docker compose exec backend ruff check .` and `docker compose exec backend pytest`
+also work.
 Migrations generated with `alembic revision --autogenerate` are automatically
 linted and formatted with Ruff.
 
