@@ -1,6 +1,16 @@
 # Flight Simulator
 
+## Overview
+
 Simulates air traffic: aircraft fly between real airports, with Table and Map views.
+
+### Table View
+
+![Table view showing the aircraft fleet](table_view.png)
+
+### Map View
+
+![Map view showing aircraft on a world map](map_view.png)
 
 **Stack:** FastAPI · SQLAlchemy · Alembic · PostgreSQL · React · Docker Compose
 
